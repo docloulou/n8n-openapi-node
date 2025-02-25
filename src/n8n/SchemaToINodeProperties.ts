@@ -58,8 +58,20 @@ export class N8NINodeProperties {
                 defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '{}';
                 break;
             case 'array':
-                type = 'json';
-                defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '[]';
+                let schemaAsArray = schema as any;
+                if (schemaAsArray.items && schemaAsArray.items.enum.length > 0) {
+                    type = 'multiOptions';
+                    options = schemaAsArray.items.enum.map((value: string) => {
+                        return {
+                            name: lodash.startCase(value),
+                            value: value,
+                        };
+                    });
+                    defaultValue = defaultValue !== undefined ? defaultValue : [];
+                } else {
+                    type = 'json';
+                    defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '[]';
+                }
                 break;
             case 'number':
             case 'integer':
@@ -68,10 +80,11 @@ export class N8NINodeProperties {
                 break;
         }
 
-        const field: FromSchemaNodeProperty = {
+        let field: FromSchemaNodeProperty = {
             type: type,
             default: defaultValue,
             description: schema.description,
+            options: options,
         };
         if (schema.enum && schema.enum.length > 0) {
             field.type = 'options';
@@ -115,7 +128,7 @@ export class N8NINodeProperties {
                     send: {
                         type: 'query',
                         property: parameter.name,
-                        value: '={{ $value }}',
+                        value: fieldSchemaKeys.type === "multiOptions" && !parameter.explode ? "={{ $value.join(',') }}" : '={{ $value }}',
                         propertyInDotNotation: false,
                     },
                 };
