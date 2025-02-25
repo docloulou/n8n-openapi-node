@@ -43,6 +43,12 @@ export class N8NINodeProperties {
         let type: NodePropertyTypes;
         let defaultValue = this.schemaExample.extractExample(schema)
 
+        let options = undefined
+
+        if (schema.allOf) {
+            schema.type = 'object';
+        }
+
         switch (schema.type) {
             case 'boolean':
                 type = 'boolean';

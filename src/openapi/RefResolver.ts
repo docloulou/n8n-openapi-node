@@ -26,16 +26,6 @@ export class RefResolver {
             schema = schema.anyOf[0]
         }
         // @ts-ignore
-        if ("allOf" in schema) {
-            // @ts-ignore
-            const results = schema.allOf.map((s) => this.resolveRef(s));
-            const schemas = results.map((r: any) => r[0]);
-            const refs = results.map((r: any) => r[1]);
-            const refsFlat = lodash.flatten<string>(refs);
-            const object = Object.assign({}, ...schemas);
-            return [object as T, refsFlat]
-        }
-        // @ts-ignore
         if ('$ref' in schema) {
             const schemaResolved = this.findRef(schema['$ref']);
             // Remove $ref from schema, add all other properties
