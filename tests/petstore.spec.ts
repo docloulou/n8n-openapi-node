@@ -426,7 +426,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  {\n    \"id\": 0,\n    \"name\": \"string\"\n  }\n]",
+            "default": "[\n  {\n    \"id\": 9007199254740991,\n    \"name\": \"string\"\n  }\n]",
             "displayName": "Tags",
             "displayOptions": {
                 "show": {
@@ -606,7 +606,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  {\n    \"id\": 0,\n    \"name\": \"string\"\n  }\n]",
+            "default": "[\n  {\n    \"id\": 9007199254740991,\n    \"name\": \"string\"\n  }\n]",
             "displayName": "Tags",
             "displayOptions": {
                 "show": {
