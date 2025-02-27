@@ -4,7 +4,9 @@ import {OpenAPIV3} from "openapi-types";
 class SchemaExampleBuilder {
     private visitedRefs: Set<string> = new Set<string>();
 
-    constructor(private resolver: RefResolver) {
+    constructor(private resolver: RefResolver, refs?: Set<string>) {
+        if (refs)
+            this.visitedRefs = new Set([...refs])
     }
 
     build(schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject, guessDefault: boolean = false): any {
@@ -43,7 +45,7 @@ class SchemaExampleBuilder {
         if (schema.properties) {
             const obj: any = example ?? {};
             for (const key in schema.properties) {
-               obj[key] = this.build(schema.properties[key], true);
+                obj[key] = (new SchemaExampleBuilder(this.resolver, this.visitedRefs)).build(schema.properties[key], true);
             }
             example = obj;
         }
