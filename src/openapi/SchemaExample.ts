@@ -22,39 +22,47 @@ class SchemaExampleBuilder {
                 this.visitedRefs.add(ref);
             }
         }
-        if ('oneOf' in schema) {
-            return this.build(schema.oneOf!![0], guessDefault);
-        }
+
         if (schema.example !== undefined) {
             return schema.example;
-        }
-        if ('allOf' in schema) {
-            const examples = schema.allOf!!.map((s) => this.build(s, true));
-            example = Object.assign({}, ...examples);
         }
 
         if (schema.default !== undefined) {
             return schema.default;
         }
+
+        if ('oneOf' in schema) {
+            return this.build(schema.oneOf!![0], guessDefault);
+        }
+
+        if ('allOf' in schema) {
+            const examples = schema.allOf!!.map((s) => this.build(s, true));
+            example = Object.assign({}, ...examples);
+        }
+
         if (schema.properties) {
             const obj: any = example ?? {};
             for (const key in schema.properties) {
-                obj[key] = this.build(schema.properties[key], true);
+               obj[key] = this.build(schema.properties[key], true);
             }
             example = obj;
         }
+
+        if (example) {
+            return example;
+        }
+
         if (schema.enum) {
             return schema.enum[0];
         }
+
         if ('items' in schema && schema.items) {
             if (schema.type === 'array' && schema.items && (schema.items as OpenAPIV3.SchemaObject).enum) {
                 return (schema.items as OpenAPIV3.SchemaObject).enum;
             }
             return [this.build(schema.items, true) ?? "string"];
         }
-        if (example) {
-            return example;
-        }
+
         // In 3.1 schema.type can be an array
         let type = (schema.type && typeof schema.type !== "string") ? schema.type[0] : schema.type;
         if (type && guessDefault) {

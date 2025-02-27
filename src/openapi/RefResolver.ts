@@ -11,20 +11,6 @@ export class RefResolver {
      */
     resolveRef<T>(schema: OpenAPIV3.ReferenceObject | T): [T, string[]?] {
         // @ts-ignore
-        if ("properties" in schema) {
-            return [schema as T, undefined];
-        }
-        // @ts-ignore
-        if ("oneOf" in schema) {
-            // @ts-ignore
-            schema = schema.oneOf[0];
-        }
-        // @ts-ignore
-        if ("anyOf" in schema) {
-            // @ts-ignore
-            schema = schema.anyOf[0];
-        }
-        // @ts-ignore
         if ('$ref' in schema) {
             const schemaResolved = this.findRef(schema['$ref']);
             // Remove $ref from schema, add all other properties
