@@ -97,6 +97,8 @@ test('query param - schema', () => {
                     description: 'List all entities',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'GET',
                             url: '=/api/entities',
                         },
@@ -247,6 +249,8 @@ test('query param - content', () => {
                     "name": "List",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/api/entities"
                         }
@@ -365,6 +369,8 @@ test('query param - dot in field name', () => {
                     description: 'List all entities',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'GET',
                             url: '=/api/entities',
                         },
@@ -475,6 +481,8 @@ test('path param', () => {
                     description: 'Get entity',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'GET',
                             url: '=/api/entities/{{$parameter["entity"]}}',
                         },
@@ -595,6 +603,8 @@ test('request body', () => {
                     description: 'Create entity',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'POST',
                             url: '=/api/entities',
                         },
@@ -742,6 +752,8 @@ test('enum schema', () => {
                     description: 'Create entity',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'POST',
                             url: '=/api/entities',
                         },
@@ -753,6 +765,7 @@ test('enum schema', () => {
         },
         {
             displayName: 'Type',
+            description: undefined,
             name: 'type',
             type: 'options',
             default: 'type1',
@@ -849,6 +862,8 @@ test('body "array" param', () => {
                     "name": "Create",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/api/entities"
                         }
@@ -995,6 +1010,8 @@ test('test overrides', () => {
                     description: 'Create entity',
                     routing: {
                         request: {
+                            "encoding": "json",
+                            "json": true,
                             method: 'POST',
                             url: '=/api/entities',
                         },
@@ -1145,6 +1162,8 @@ test('multiple tags', () => {
                         "name": "List",
                         "routing": {
                             "request": {
+                                "encoding": "json",
+                                "json": true,
                                 "method": "GET",
                                 "url": "=/api/entities"
                             }
@@ -1173,6 +1192,8 @@ test('multiple tags', () => {
                         "name": "List",
                         "routing": {
                             "request": {
+                                "encoding": "json",
+                                "json": true,
                                 "method": "GET",
                                 "url": "=/api/entities"
                             }
@@ -1338,6 +1359,8 @@ test('no tags - default tag', () => {
                         "name": "List",
                         "routing": {
                             "request": {
+                                "encoding": "json",
+                                "json": true,
                                 "method": "GET",
                                 "url": "=/api/entities"
                             }

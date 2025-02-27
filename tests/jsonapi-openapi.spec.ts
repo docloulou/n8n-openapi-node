@@ -42,6 +42,8 @@ test('petstore.json', () => {
                     "description": "Creates a new model resource with the provided data.",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/model/"
                         }

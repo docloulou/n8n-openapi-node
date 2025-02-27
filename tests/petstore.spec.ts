@@ -51,6 +51,8 @@ test('petstore.json', () => {
                     "name": "Update Pet",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "PUT",
                             "url": "=/pet"
                         }
@@ -63,6 +65,8 @@ test('petstore.json', () => {
                     "name": "Add Pet",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/pet"
                         }
@@ -75,6 +79,8 @@ test('petstore.json', () => {
                     "name": "Find Pets By Status",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/pet/findByStatus"
                         }
@@ -87,6 +93,8 @@ test('petstore.json', () => {
                     "name": "Find Pets By Tags",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/pet/findByTags"
                         }
@@ -99,6 +107,8 @@ test('petstore.json', () => {
                     "name": "Get Pet By Id",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/pet/{{$parameter[\"petId\"]}}"
                         }
@@ -111,6 +121,8 @@ test('petstore.json', () => {
                     "name": "Update Pet With Form",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/pet/{{$parameter[\"petId\"]}}"
                         }
@@ -123,6 +135,8 @@ test('petstore.json', () => {
                     "name": "Delete Pet",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "DELETE",
                             "url": "=/pet/{{$parameter[\"petId\"]}}"
                         }
@@ -135,6 +149,8 @@ test('petstore.json', () => {
                     "name": "Upload File",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/pet/{{$parameter[\"petId\"]}}/uploadImage"
                         }
@@ -163,6 +179,8 @@ test('petstore.json', () => {
                     "name": "Get Inventory",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/store/inventory"
                         }
@@ -175,6 +193,8 @@ test('petstore.json', () => {
                     "name": "Place Order",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/store/order"
                         }
@@ -187,6 +207,8 @@ test('petstore.json', () => {
                     "name": "Get Order By Id",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/store/order/{{$parameter[\"orderId\"]}}"
                         }
@@ -199,6 +221,8 @@ test('petstore.json', () => {
                     "name": "Delete Order",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "DELETE",
                             "url": "=/store/order/{{$parameter[\"orderId\"]}}"
                         }
@@ -227,6 +251,8 @@ test('petstore.json', () => {
                     "name": "Create User",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/user"
                         }
@@ -239,6 +265,8 @@ test('petstore.json', () => {
                     "name": "Create Users With List Input",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "POST",
                             "url": "=/user/createWithList"
                         }
@@ -251,6 +279,8 @@ test('petstore.json', () => {
                     "name": "Login User",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/user/login"
                         }
@@ -263,6 +293,8 @@ test('petstore.json', () => {
                     "name": "Logout User",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/user/logout"
                         }
@@ -275,6 +307,8 @@ test('petstore.json', () => {
                     "name": "Get User By Name",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "GET",
                             "url": "=/user/{{$parameter[\"username\"]}}"
                         }
@@ -287,6 +321,8 @@ test('petstore.json', () => {
                     "name": "Update User",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "PUT",
                             "url": "=/user/{{$parameter[\"username\"]}}"
                         }
@@ -299,6 +335,8 @@ test('petstore.json', () => {
                     "name": "Delete User",
                     "routing": {
                         "request": {
+                            "encoding": "json",
+                            "json": true,
                             "method": "DELETE",
                             "url": "=/user/{{$parameter[\"username\"]}}"
                         }

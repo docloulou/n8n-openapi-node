@@ -79,6 +79,9 @@ class SchemaExampleBuilder {
                     return []
                 case 'number':
                 case 'integer':
+                    if (schema.maximum || schema.minimum || schema.exclusiveMinimum || schema.exclusiveMaximum || schema.multipleOf) {
+                        return generateNumberWithConstraints(schema);
+                    }
                     return generateNumberWithConstraints(schema);
                 default: // null for OpenAPI 3.1
                     return null;

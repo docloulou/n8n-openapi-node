@@ -8,6 +8,11 @@ import {OptionsByResourceMap} from "./n8n/OptionsByResourceMap";
 import {INodeProperties} from "n8n-workflow";
 import {replacePathVarsToParameter} from "./n8n/utils";
 import {IResourceParser} from "./ResourceParser";
+import {
+    INodeExecutionData, INodePropertyRouting,
+    INodeRequestOutput
+} from "n8n-workflow/dist/Interfaces";
+import ResponseObject = OpenAPIV3.ResponseObject;
 
 export class BaseOperationsCollector implements OpenAPIVisitor {
     public readonly _fields: INodeProperties[]
@@ -131,24 +136,60 @@ export class BaseOperationsCollector implements OpenAPIVisitor {
     }
 
     protected parseOperation(operation: OpenAPIV3.OperationObject, context: OperationContext) {
-        const method = context.method
+        const method = context.method;
         const uri = context.pattern;
-        const parser = this.operationParser
+        const parser = this.operationParser;
+        let returnsImage = operation.responses &&
+            Object.entries(operation.responses)
+                .filter(([code, data]) =>
+                    code.startsWith("2") && 'content' in data && data.content
+                )
+                .map(([_, data]) => (data as ResponseObject).content)
+                .map((content) => Object.keys(content!))
+                .flat()
+                .filter((contentType) => contentType.match(/image\/*/))
+                .length > 0;
+        let output: INodeRequestOutput | undefined = undefined
+        if (returnsImage) {
+            output = {
+                postReceive: [async (items, response): Promise<INodeExecutionData[]> => {
+                    let bufferData = Buffer.from(items[0].json as unknown as ArrayBuffer);
+                    const base64Data = bufferData.toString('base64');
+                    return [{
+                        binary: {
+                            data: {
+                                data: base64Data,
+                                mimeType: response.headers['content-type'] as string,
+                                fileSize: bufferData.length.toString(),
+                                fileType: 'image'
+                            },
+                        },
+                        json: {},
+                    }];
+                }],
+            }
+        }
+        let routing : INodePropertyRouting = {
+            request: {
+                // @ts-ignore
+                method: method.toUpperCase(),
+                url: `=${replacePathVarsToParameter(uri)}`,
+                json: !output,
+                encoding: returnsImage ? 'arraybuffer': 'json',
+                headers: returnsImage ? {
+                  Accept: 'image/*',
+                } : undefined
+            },
+            output,
+        };
         const option = {
             name: parser.name(operation, context),
             value: parser.value(operation, context),
             action: parser.action(operation, context),
             description: parser.description(operation, context),
-            routing: {
-                request: {
-                    method: method.toUpperCase(),
-                    url: `=${replacePathVarsToParameter(uri)}`,
-                },
-            },
+            routing,
         };
         const fields = this.parseFields(operation, context);
-
-
         return {
             option: option,
             fields: fields,
