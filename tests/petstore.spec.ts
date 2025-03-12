@@ -401,7 +401,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  null\n]",
+            "default": "[\n  \"string\"\n]",
             "displayName": "Photo Urls",
             "displayOptions": {
                 "show": {
@@ -426,7 +426,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  {}\n]",
+            "default": "[\n  {\n    \"id\": 0,\n    \"name\": \"string\"\n  }\n]",
             "displayName": "Tags",
             "displayOptions": {
                 "show": {
@@ -581,7 +581,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  null\n]",
+            "default": "[\n  \"string\"\n]",
             "displayName": "Photo Urls",
             "displayOptions": {
                 "show": {
@@ -606,7 +606,7 @@ test('petstore.json', () => {
             "type": "json"
         },
         {
-            "default": "[\n  {}\n]",
+            "default": "[\n  {\n    \"id\": 0,\n    \"name\": \"string\"\n  }\n]",
             "displayName": "Tags",
             "displayOptions": {
                 "show": {
@@ -746,7 +746,7 @@ test('petstore.json', () => {
             }
         },
         {
-            "default": "[\n  null\n]",
+            "default": "[\n  \"string\"\n]",
             "description": "Tags to filter by",
             "displayName": "Tags",
             "displayOptions": {

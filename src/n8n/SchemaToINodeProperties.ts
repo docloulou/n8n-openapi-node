@@ -39,9 +39,9 @@ export class N8NINodeProperties {
     }
 
     fromSchema(schema: Schema): FromSchemaNodeProperty {
-        schema = this.refResolver.resolve<OpenAPIV3.SchemaObject>(schema)
+        schema = this.refResolver.resolve<OpenAPIV3.SchemaObject>(schema);
         let type: NodePropertyTypes;
-        let defaultValue = this.schemaExample.extractExample(schema)
+        let defaultValue = this.schemaExample.extractExample(schema);
 
         let options = undefined
 
@@ -65,7 +65,7 @@ export class N8NINodeProperties {
                 break;
             case 'array':
                 let schemaAsArray = schema as any;
-                if (schemaAsArray.items && schemaAsArray.items.enum.length > 0) {
+                if (schemaAsArray.items && schemaAsArray.items.enum && schemaAsArray.items.enum.length > 0) {
                     type = 'multiOptions';
                     options = schemaAsArray.items.enum.map((value: string) => {
                         return {
