@@ -39,15 +39,9 @@ export class N8NINodeProperties {
     }
 
     fromSchema(schema: Schema): FromSchemaNodeProperty {
-        schema = this.refResolver.resolve<OpenAPIV3.SchemaObject>(schema);
+        schema = this.refResolver.resolve<OpenAPIV3.SchemaObject>(schema)
         let type: NodePropertyTypes;
-        let defaultValue = this.schemaExample.extractExample(schema);
-
-        let options = undefined
-
-        if (schema.allOf) {
-            schema.type = 'object';
-        }
+        let defaultValue = this.schemaExample.extractExample(schema)
 
         switch (schema.type) {
             case 'boolean':
@@ -64,20 +58,8 @@ export class N8NINodeProperties {
                 defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '{}';
                 break;
             case 'array':
-                let schemaAsArray = schema as any;
-                if (schemaAsArray.items && schemaAsArray.items.enum && schemaAsArray.items.enum.length > 0) {
-                    type = 'multiOptions';
-                    options = schemaAsArray.items.enum.map((value: string) => {
-                        return {
-                            name: lodash.startCase(value),
-                            value: value,
-                        };
-                    });
-                    defaultValue = defaultValue !== undefined ? defaultValue : [];
-                } else {
-                    type = 'json';
-                    defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '[]';
-                }
+                type = 'json';
+                defaultValue = defaultValue !== undefined ? JSON.stringify(defaultValue, null, 2) : '[]';
                 break;
             case 'number':
             case 'integer':
@@ -86,11 +68,10 @@ export class N8NINodeProperties {
                 break;
         }
 
-        let field: FromSchemaNodeProperty = {
+        const field: FromSchemaNodeProperty = {
             type: type,
             default: defaultValue,
             description: schema.description,
-            options: options,
         };
         if (schema.enum && schema.enum.length > 0) {
             field.type = 'options';
@@ -121,7 +102,7 @@ export class N8NINodeProperties {
         }
         const fieldParameterKeys: Partial<INodeProperties> = {
             displayName: lodash.startCase(parameter.name),
-            name: encodeURIComponent(parameter.name.replace(/\./g, "-")),
+            name: parameter.name.replace(/\./g, "-"),
             required: parameter.required,
             description: parameter.description,
             default: parameter.example,
@@ -134,7 +115,7 @@ export class N8NINodeProperties {
                     send: {
                         type: 'query',
                         property: parameter.name,
-                        value: fieldSchemaKeys.type === "multiOptions" && !parameter.explode ? "={{ $value.join(',') }}" : '={{ $value }}',
+                        value: '={{ $value }}',
                         propertyInDotNotation: false,
                     },
                 };

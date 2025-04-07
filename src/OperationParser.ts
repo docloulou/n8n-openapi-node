@@ -1,35 +1,47 @@
-import {OpenAPIV3} from "openapi-types";
+import { OpenAPIV3 } from "openapi-types";
 import * as lodash from "lodash";
-import {OperationContext} from "./openapi/OpenAPIVisitor";
+import { OperationContext } from "./openapi/OpenAPIVisitor";
 
 /**
  * Extract information for n8n node from OpenAPI operation
  */
 export interface IOperationParser {
-    /**
-     * Name of the operation (e.g. "Create User")
-     */
-    name(operation: OpenAPIV3.OperationObject, context: OperationContext): string
+  /**
+   * Name of the operation (e.g. "Create User")
+   */
+  name(operation: OpenAPIV3.OperationObject, context: OperationContext): string;
 
-    /**
-     * Value of the operation (e.g. "create-user")
-     */
-    value(operation: OpenAPIV3.OperationObject, context: OperationContext): string
+  /**
+   * Value of the operation (e.g. "create-user")
+   */
+  value(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string;
 
-    /**
-     * Action of the operation (e.g. "Create User") - will be visible in list of actions
-     */
-    action(operation: OpenAPIV3.OperationObject, context: OperationContext): string
+  /**
+   * Action of the operation (e.g. "Create User") - will be visible in list of actions
+   */
+  action(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string;
 
-    /**
-     * Description of the operation
-     */
-    description(operation: OpenAPIV3.OperationObject, context: OperationContext): string
+  /**
+   * Description of the operation
+   */
+  description(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string;
 
-    /**
-     * Should skip this operation or not
-     */
-    shouldSkip(operation: OpenAPIV3.OperationObject, context: OperationContext): boolean;
+  /**
+   * Should skip this operation or not
+   */
+  shouldSkip(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): boolean;
 }
 
 /**
@@ -38,28 +50,53 @@ export interface IOperationParser {
  * Skip deprecated operations
  */
 export class DefaultOperationParser implements IOperationParser {
-    shouldSkip(operation: OpenAPIV3.OperationObject, context: OperationContext): boolean {
-        return !!operation.deprecated
+  shouldSkip(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): boolean {
+    return !!operation.deprecated;
+  }
+
+  name(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string {
+    if (operation.operationId) {
+      return lodash.startCase(operation.operationId);
     }
 
-    name(operation: OpenAPIV3.OperationObject, context: OperationContext): string {
-        if (operation.operationId) {
-            return lodash.startCase(operation.operationId)
-        }
-        return context.method.toUpperCase() + " " + context.pattern
+    const summary = operation.summary || context.path.summary;
+
+    if (summary) {
+      return lodash.startCase(summary);
     }
 
-    value(operation: OpenAPIV3.OperationObject, context: OperationContext): string {
-        let name = this.name(operation, context)
-        // replace all non-alphanumeric characters with '-'
-        return name.replace(/[^a-zA-Z0-9 ]/g, '-');
-    }
+    return `${context.method.toUpperCase()} ${context.pattern}`;
+  }
 
-    action(operation: OpenAPIV3.OperationObject, context: OperationContext): string {
-        return operation.summary || this.name(operation, context)
-    }
+  value(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string {
+    const name = this.name(operation, context);
+    return name.replace(/[^a-zA-Z0-9 ]/g, "-");
+  }
 
-    description(operation: OpenAPIV3.OperationObject, context: OperationContext): string {
-        return operation.description || operation.summary || '';
-    }
+  action(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string {
+    return (
+      operation.summary || context.path.summary || this.name(operation, context)
+    );
+  }
+
+  description(
+    operation: OpenAPIV3.OperationObject,
+    context: OperationContext
+  ): string {
+    return (
+      operation.description || operation.summary || context.path.summary || ""
+    );
+  }
 }
